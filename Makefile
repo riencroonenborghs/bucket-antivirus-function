@@ -13,7 +13,7 @@
 # limitations under the License.
 
 AMZ_LINUX_VERSION:=2
-current_dir := $(shell pwd)
+current_dir := "$(shell pwd)"
 container_dir := /opt/app
 circleci := ${CIRCLECI}
 
