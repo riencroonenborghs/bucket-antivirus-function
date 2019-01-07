@@ -59,6 +59,11 @@ def download_s3_object(s3_object, local_prefix):
     s3_object.download_file(local_path)
     return local_path
 
+def s3_object_size(s3_object):
+    return s3.Bucket(s3_object.bucket_name).Object(s3_object.key).content_length
+
+def can_scan(s3_object):
+    return s3_object_size(s3_object) > MAX_FILESIZE_TO_SCAN
 
 def set_av_metadata(s3_object, result):
     content_type = s3_object.content_type
@@ -132,6 +137,14 @@ def lambda_handler(event, context):
     print("Script starting at %s\n" %
           (start_time.strftime("%Y/%m/%d %H:%M:%S UTC")))
     s3_object = event_object(event)
+    size = s3_object_size(s3_object)
+    print("Uploaded filesize: %d\n" % size)
+    print("Max. filesize: %d\n" % MAX_FILESIZE_TO_SCAN)
+    if size < MAX_FILESIZE_TO_SCAN:
+        print("Uploaded file within limits, continuing ...\n")
+    else:
+        print("Uploaded file too big, skipping scan.\n")
+        return
     verify_s3_object_version(s3_object)
     sns_start_scan(s3_object)
     file_path = download_s3_object(s3_object, "/tmp")

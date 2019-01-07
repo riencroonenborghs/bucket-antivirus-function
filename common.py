@@ -30,6 +30,7 @@ CLAMAVLIB_PATH = os.getenv("CLAMAVLIB_PATH", "./bin")
 CLAMSCAN_PATH = os.getenv("CLAMSCAN_PATH", "./bin/clamscan")
 FRESHCLAM_PATH = os.getenv("FRESHCLAM_PATH", "./bin/freshclam")
 AV_PROCESS_ORIGINAL_VERSION_ONLY = os.getenv("AV_PROCESS_ORIGINAL_VERSION_ONLY", "False")
+MAX_FILESIZE_TO_SCAN = int(os.getenv("MAX_FILESIZE_TO_SCAN", 512 * 1024 * 1024)) # defaults to 512mb
 
 AV_DEFINITION_FILENAMES = ["main.cvd","daily.cvd", "daily.cud", "bytecode.cvd", "bytecode.cud"]
 
